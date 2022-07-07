@@ -3,15 +3,14 @@ import {actions} from "./kalkulator/kalkulator";
 import {useState} from "react";
 
 function App() {
+    const dispatch                      = useDispatch();
+    const display                       = useSelector((state) => state.kalkulator.display);
+    const previous                      = useSelector((state) => state.kalkulator.previous);
+    const record                        = useSelector((state) => state.kalkulator.record.join(""));
+    const [operator, setOperator]       = useState("");
 
-    const dispatch                  = useDispatch();
-    const display                   = useSelector((state) => state.kalkulator.display);
-    const previous                  = useSelector((state) => state.kalkulator.previous);
-    const record                    = useSelector((state) => state.kalkulator.record.join(""));
-    const [operator, setOperator]   = useState("");
-
-    const [setResultIn]             = useState(false);
-    const [setShowResult]           = useState("");
+    const [resultIn, setResultIn]       = useState(false);
+    const [showResult, setShowResult]   = useState("");
     const setDisplayHandler = (event) => {
         setResultIn(false);
         if (display.includes(".") && event.target.value === ".") {
@@ -19,10 +18,12 @@ function App() {
         }
         dispatch(actions.setDisplay(event.target.value));
         dispatch(actions.pushToRecord(event.target.value));
+
+        // TEST:
         dispatch(actions.setPrevious(event.target.value));
     };
 
-    const clearHandler =() => {
+    const clearHandler = () => {
         dispatch(actions.clear());
         dispatch(actions.clearRecord());
         setResultIn(false);
@@ -54,26 +55,29 @@ function App() {
             return;
         dispatch(actions.setPrevious(display));
         dispatch(actions.clear());
+
+        // TEST:
         dispatch(actions.setPrevious(event.target.value));
     };
 
     const equal = () => {
         setResultIn(true);
         let result = eval(record);
+
         setShowResult(result);
         dispatch(actions.clearRecord());
         dispatch(actions.pushToRecord(result));
     };
 
     return (
-        <div className="card">
-            <div className="card-body">
+        <div class="card">
+            <div class="card-body">
                 <p id="record" className="form-control">
                     {record}
                 </p>
                 <div className="row">
                     <div className="col-md-4">
-                        <div className="d-grid gap-2">
+                        <div class="d-grid gap-2">
                             <button
                                 value="1"
                                 onClick={setDisplayHandler}
@@ -85,7 +89,7 @@ function App() {
                     </div>
 
                     <div className="col-md-4">
-                        <div className="d-grid gap-2">
+                        <div class="d-grid gap-2">
                             <button
                                 value="2"
                                 onClick={setDisplayHandler}
@@ -97,7 +101,7 @@ function App() {
                     </div>
 
                     <div className="col-md-4">
-                        <div className="d-grid gap-2">
+                        <div class="d-grid gap-2">
                             <button
                                 value="3"
                                 onClick={setDisplayHandler}
@@ -108,7 +112,7 @@ function App() {
                         </div>
                     </div>
                     <div className="col-md-4">
-                        <div className="d-grid gap-2">
+                        <div class="d-grid gap-2">
                             <button
                                 value="4"
                                 onClick={setDisplayHandler}
@@ -119,7 +123,7 @@ function App() {
                         </div>
                     </div>
                     <div className="col-md-4">
-                        <div className="d-grid gap-2">
+                        <div class="d-grid gap-2">
                             <button
                                 value="5"
                                 onClick={setDisplayHandler}
@@ -130,7 +134,7 @@ function App() {
                         </div>
                     </div>
                     <div className="col-md-4">
-                        <div className="d-grid gap-2">
+                        <div class="d-grid gap-2">
                             <button
                                 value="6"
                                 onClick={setDisplayHandler}
@@ -141,7 +145,7 @@ function App() {
                         </div>
                     </div>
                     <div className="col-md-4">
-                        <div className="d-grid gap-2">
+                        <div class="d-grid gap-2">
                             <button
                                 value="7"
                                 onClick={setDisplayHandler}
@@ -152,7 +156,7 @@ function App() {
                         </div>
                     </div>
                     <div className="col-md-4">
-                        <div className="d-grid gap-2">
+                        <div class="d-grid gap-2">
                             <button
                                 value="8"
                                 onClick={setDisplayHandler}
@@ -163,7 +167,7 @@ function App() {
                         </div>
                     </div>
                     <div className="col-md-4">
-                        <div className="d-grid gap-2">
+                        <div class="d-grid gap-2">
                             <button
                                 value="9"
                                 onClick={setDisplayHandler}
@@ -174,9 +178,9 @@ function App() {
                         </div>
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col-md-3">
-                        <div className="d-grid gap-2">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="d-grid gap-2">
                             <button
                                 value="0"
                                 onClick={setDisplayHandler}
@@ -186,8 +190,8 @@ function App() {
                             </button>
                         </div>
                     </div>
-                    <div className="col-md-3">
-                        <div className="d-grid gap-2">
+                    <div class="col-md-3">
+                        <div class="d-grid gap-2">
                             <button
                                 value="+"
                                 onClick={setPrevAndOperate}
@@ -197,8 +201,8 @@ function App() {
                             </button>
                         </div>
                     </div>
-                    <div className="col-md-3">
-                        <div className="d-grid gap-2">
+                    <div class="col-md-3">
+                        <div class="d-grid gap-2">
                             <button
                                 value="-"
                                 onClick={setPrevAndOperate}
@@ -208,15 +212,15 @@ function App() {
                             </button>
                         </div>
                     </div>
-                    <div className="col-md-3">
-                        <div className="d-grid gap-2">
+                    <div class="col-md-3">
+                        <div class="d-grid gap-2">
                             <button onClick={equal} className="btn btn-sm btn-primary m-1" id="equals">
                                 =
                             </button>
                         </div>
                     </div>
-                    <div className="col-md-3">
-                        <div className="d-grid gap-2">
+                    <div class="col-md-3">
+                        <div class="d-grid gap-2">
                             <button
                                 value="/"
                                 onClick={setPrevAndOperate}
@@ -226,8 +230,8 @@ function App() {
                             </button>
                         </div>
                     </div>
-                    <div className="col-md-3">
-                        <div className="d-grid gap-2">
+                    <div class="col-md-3">
+                        <div class="d-grid gap-2">
                             <button
                                 value="*"
                                 onClick={setPrevAndOperate}
@@ -237,8 +241,8 @@ function App() {
                             </button>
                         </div>
                     </div>
-                    <div className="col-md-3">
-                        <div className="d-grid gap-2">
+                    <div class="col-md-3">
+                        <div class="d-grid gap-2">
                             <button
                                 value="."
                                 onClick={setDisplayHandler}
@@ -248,8 +252,8 @@ function App() {
                             </button>
                         </div>
                     </div>
-                    <div className="col-md-3">
-                        <div className="d-grid gap-2">
+                    <div class="col-md-3">
+                        <div class="d-grid gap-2">
                             <button
                                 onClick={clearHandler}
                                 className="btn btn-blok btn-danger btn-sm m-1"
